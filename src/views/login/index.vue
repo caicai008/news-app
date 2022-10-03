@@ -53,6 +53,8 @@ export default {
         setToken(res.data.data.token)
         Notify({ type: 'success', message: '登陆成功！' })
         this.isLoading = false
+        // 路由跳转
+        this.$router.push('/layout/home')
       } catch (error) {
         Notify({ type: 'danger', message: '登陆失败！' })
         this.isLoading = false
