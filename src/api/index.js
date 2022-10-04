@@ -1,5 +1,4 @@
 import request from '@/utils/request'
-import { getToken } from '@/utils/token'
 
 // 登录-登录接口
 export const loginAPI = ({ mobile, code }) => request({
@@ -13,20 +12,34 @@ export const loginAPI = ({ mobile, code }) => request({
 
 // 频道-获取用户选择频道
 export const getUserChannelAPI = () => request({
-  url: '/v1_0/user/channels',
-  headers: {
-    Authorization: `Bearer ${getToken()}`
-  }
+  url: '/v1_0/user/channels'
 })
 
 // 文章-获取文章列表
 export const getListAPI = ({ channel_id, timestamp }) => request({
   url: '/v1_0/articles',
-  headers: {
-    Authorization: `Bearer ${getToken()}`
-  },
   params: {
     channel_id,
     timestamp
+  }
+})
+
+// 反馈-不感兴趣
+export const articleDislikeAPI = ({ target }) => request({
+  url: '/v1_0/article/dislikes',
+  method: 'POST',
+  data: {
+    target
+  }
+})
+
+// 反馈-举报内容
+export const articleReportsAPI = ({ target, type, remark }) => request({
+  url: '/v1_0/article/reports',
+  method: 'POST',
+  data: {
+    target,
+    type,
+    remark
   }
 })

@@ -15,8 +15,10 @@
       <article-item
         v-for="item in artList"
         :key="item.art_id"
-        :artObj='item'>
-        >
+        :artObj='item'
+        @dislikeEv='dislikeFn'
+        @reportEv= 'reportFn'
+      >
       </article-item>
       </van-list>
     </van-pull-refresh>
@@ -25,7 +27,9 @@
 
 <script>
 import ArticleItem from './components/ArticleItem.vue'
-import { getListAPI } from '@/api/index'
+import { getListAPI, articleDislikeAPI, articleReportsAPI } from '@/api/index'
+import { Notify } from 'vant'
+
 export default {
   props: {
     channelId: Number // 名字写错了好久才发现呜呜呜
@@ -81,8 +85,31 @@ export default {
       this.nextTime = new Date().getTime()
       this.getArticleList()
       this.isLoading = false
+    },
+    // 反馈-不感兴趣
+    async dislikeFn (id) {
+      try {
+        await articleDislikeAPI({
+          target: id
+        })
+        Notify({ type: 'success', message: '反馈成功，将减少此类推送' })
+      } catch (error) {
+        Notify({ type: 'danger', message: '反馈失败，请联系管理员' })
+      }
+    },
+    // 反馈-举报
+    async reportFn (id, type) {
+      try {
+        await articleReportsAPI({
+          target: id,
+          type: type,
+          remark: '没有理由'
+        })
+        Notify({ type: 'success', message: '举报成功！' })
+      } catch (error) {
+        Notify({ type: 'danger', message: '举报失败，请联系管理员' })
+      }
     }
   }
-
 }
 </script>
