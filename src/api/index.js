@@ -10,9 +10,34 @@ export const loginAPI = ({ mobile, code }) => request({
   }
 })
 
+// 频道-获取所有频道
+export const getAllChannelAPI = () => request({
+  url: '/v1_0/channels'
+})
+
 // 频道-获取用户选择频道
 export const getUserChannelAPI = () => request({
   url: '/v1_0/user/channels'
+})
+
+// 频道 - 更新已选
+export const updateChannelAPI = ({ channels }) => {
+  return request({
+    url: '/v1_0/user/channels',
+    method: 'PUT',
+    data: {
+      channels: channels
+    }
+  })
+}
+
+// 频道-删除频道
+export const deleteChannelAPI = ({ target }) => request({
+  url: '/v1_0/user/channels/:target',
+  method: 'DELETE',
+  data: {
+    target
+  }
 })
 
 // 文章-获取文章列表
