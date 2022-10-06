@@ -68,3 +68,69 @@ export const articleReportsAPI = ({ target, type, remark }) => request({
     remark
   }
 })
+
+// 搜索-联想菜单
+export const suggestListAPI = ({ q }) => request({
+  url: '/v1_0/suggestion',
+  params: {
+    q
+  }
+})
+
+// 搜索 - 结果列表
+export const searchResultListAPI = ({ q, page = 1 }) => {
+  return request({
+    url: '/v1_0/search',
+    params: {
+      q,
+      page
+    }
+  })
+}
+
+// 文章 - 详情
+export const articleDetailAPI = ({ id }) => {
+  return request({
+    // :id是后台规定的参数名
+    // 前端要在对应路径位置传值(不要写:)
+    url: `/v1_0/articles/${id}`
+  })
+}
+
+// 文章 - 关注作者
+export const followedUserAPI = ({ target }) => {
+  return request({
+    url: '/v1_0/user/followings',
+    method: 'POST',
+    data: {
+      target: target
+    }
+  })
+}
+// 文章 - 取消关注作者
+export const unFollowedUserAPI = ({ uid }) => {
+  return request({
+    // 这uid只是个变量名, 把值拼接在url发给后台(无需指定参数名)
+    url: `/v1_0/user/followings/${uid}`,
+    method: 'DELETE'
+  })
+}
+
+// 文章 - 点赞
+export const articleLikeAPI = ({ target }) => {
+  return request({
+    url: '/v1_0/article/likings',
+    method: 'POST',
+    data: {
+      target: target
+    }
+  })
+}
+
+// 文章 - 取消点赞
+export const articleDisLikeAPI = ({ artId }) => {
+  return request({
+    url: `/v1_0/article/likings/${artId}`,
+    method: 'DELETE'
+  })
+}

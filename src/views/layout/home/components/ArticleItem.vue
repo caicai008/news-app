@@ -1,6 +1,6 @@
 <template>
   <!-- 一条文章单元格 -->
-  <van-cell>
+  <van-cell  @click="$router.push(`/detail?art_id=${artObj.art_id}`)">
     <!-- 标题区域的插槽 -->
     <template #title>
       <div class="title-box">
@@ -19,11 +19,11 @@
       <div class="label-box">
         <div>
           <span>{{artObj.aut_name}}</span>
-          <span>{{artObj.comm_count}}</span>
+          <span>评论{{artObj.comm_count}}</span>
           <span>{{formateDate(artObj.pubdate)}}</span>
         </div>
         <!-- 反馈按钮 -->
-        <van-icon name="cross"  @click="show = true"/>
+        <van-icon name="cross"  @click.stop="show = true" v-if="showX"/>
         <!-- get-container="body" 指定蒙层挂载点 -->
         <van-action-sheet
           v-model="show"
@@ -42,7 +42,13 @@
 import { timeAgo } from '@/utils/date'
 import { firstAction, secondAction } from '@/api/report'
 export default {
-  props: ['artObj'],
+  props: {
+    artObj: Object,
+    showX: {
+      type: Boolean,
+      default: true
+    }
+  },
   data () {
     return {
       show: false,

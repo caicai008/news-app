@@ -26,6 +26,18 @@ const routes = [
         component: () => import('@/views/layout/user')
       }
     ]
+  },
+  {
+    path: '/search',
+    component: () => import('@/views/search')
+  },
+  {
+    path: '/search/:keywords', // 动态路由
+    component: () => import('@/views/search/SearchResult.vue')
+  },
+  {
+    path: '/detail', // 动态路由
+    component: () => import('@/views/detail/ArticleDetail.vue')
   }
 
 ]
