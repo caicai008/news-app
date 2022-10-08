@@ -24,7 +24,7 @@ export default {
     const res = await searchResultListAPI({
       q: this.$route.params.keywords // 拿到关键词, keywords来源于router/index.js你定义的动态路由参数名
     })
-    console.log(res)
+    // console.log(res)
     this.articleList = res.data.data.results
   }
 }

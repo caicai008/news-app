@@ -9,9 +9,12 @@ import {
   Button, Tabbar, TabbarItem,
   Icon, Tab, Tabs, cell, List,
   PullRefresh, ActionSheet, Popup,
-  Col, Row, Badge, Search, Divider
+  Col, Row, Badge, Search, Divider,
+  Tag, CellGroup
 } from 'vant'
 
+Vue.use(CellGroup)
+Vue.use(Tag)
 Vue.use(Divider)
 Vue.use(Form)
 Vue.use(Field)

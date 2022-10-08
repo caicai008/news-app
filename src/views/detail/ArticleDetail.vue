@@ -7,7 +7,7 @@
         <!-- 文章标题 -->
           <h1 class="art_title">{{ artObj.title }}</h1>
           <!-- 作者信息 -->
-          <van-cell :title="artObj.aut_name" label="artObj.pubdate">
+          <van-cell :title="artObj.aut_name" :label="timeAgo(artObj.pubdate)">
             <template #icon>
               <!-- 头像 -->
               <img :src="artObj.aut_photo" alt="" class="avatar">
@@ -30,12 +30,19 @@
             <van-button icon="good-job-o" type="danger" plain size="small" v-else @click="likeFn(true)">点赞</van-button>
           </div>
       </div>
+
+      <van-divider/>
+      <!-- 评论 -->
+      <comment-list/>
     </div>
 </template>
 
 <script>
 import { articleDetailAPI, followedUserAPI, unFollowedUserAPI, articleLikeAPI, articleDislikeAPI } from '@/api/index'
+import { timeAgo } from '@/utils/date'
+import CommentList from './CommentList.vue'
 export default {
+  components: { CommentList },
   data () {
     return {
       artObj: {} // 文章对象
@@ -50,6 +57,7 @@ export default {
     this.artObj = res.data.data
   },
   methods: {
+    timeAgo,
     // 作者关注/取关
     async followedFn (bool) {
       if (bool === true) {
@@ -78,6 +86,7 @@ export default {
       } else {
         this.artObj.attitude = -1
         await articleDislikeAPI({
+          // 此处有问题 --- 待解决
           artId: this.$route.query.art_id
         })
       }

@@ -134,3 +134,43 @@ export const articleDisLikeAPI = ({ artId }) => {
     method: 'DELETE'
   })
 }
+
+// 评论 - 获取评论
+export const getCommentAPI = ({ art_id, offset }) => request({
+  url: '/v1_0/comments',
+  params: {
+    type: 'a',
+    source: art_id,
+    offset
+  }
+})
+
+// 评论 - 点赞评论
+export const commentLikingAPI = ({ target }) => request({
+  url: '/v1_0/comment/likings',
+  method: 'POST',
+  data: {
+    target
+  }
+})
+
+// 评论-取消点赞
+export const commentDisLikingAPI = ({ comId }) => {
+  return request({
+    url: `/v1_0/comment/likings/${comId}`,
+    method: 'DELETE'
+  })
+}
+
+// 评论-发布评论
+export const pubCommentAPI = ({ target, content }) => {
+  return request({
+    url: '/v1_0/comments',
+    method: 'POST', // 注意方法不要有空格
+    data: {
+      target,
+      content,
+      art_id: null
+    }
+  })
+}
