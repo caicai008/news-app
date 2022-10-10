@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>体验websocket</title>
+    <style>
+        #contanier {
+            width: 500px;
+            height: 400px;
+            border: 2px dashed #7575e7;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div id="contanier"></div>
+    <!-- 1  建立连接 (拨号) -->
+    <!-- 2  发消息 接消息 -->
+    <!-- 3  关闭连接 -->
+    <input type="text" id="message">
+    <button onclick="openWS()">建立连接</button>
+    <button onclick="sendMessage()">发送消息</button>
+    <button onclick="closeWS()">关闭连接</button>
+
+    <script>
+        var dom = document.getElementById("contanier")
+        var inputDom = document.getElementById("message")
+        var isOpen = false  // 表示是否已经建立了拨号
+        var ws;  // 别的方法 也需要使用ws
+           // 打开websocket连接
+          var  openWS = function (){
+              /// 网络上提供的一个测试websocket功能的服务器地址。
+              /// 它的效果是，你向服务器发什么消息 ，它就原样回复给你。
+              ws =  new WebSocket('wss://echo.websocket.org')  // 建立与服务器的连接
+
+              // onopen是webSocket约定事件名
+              // 当本地客户端浏览器与服务器建立连接之后，就会执行onopen的回调
+              ws.onopen = function (event) {
+                isOpen = true
+                // 建立成功
+                dom.innerHTML = dom.innerHTML + `<p>与服务器成功建立连接</p>`
+              }
+              //   接收消息
+              // onmessage是webSocket约定事件名
+              // 如果从服务器上发过来了消息，则会进入onmessage的回调
+              ws.onmessage = function (event) {
+                  // 由于 我们先给服务器发了消息 服务器给我们回了消息
+                  dom.innerHTML = dom.innerHTML + `<p style='color: blue'>服务器说:${event.data}</p>`
+              }
+              // onclose是webSocket约定事件名
+              ws.onclose = function () {
+                   // 此函数表示 关闭连接成功
+                   isOpen = false // 把状态关闭掉
+                   dom.innerHTML = dom.innerHTML + `<p>与服务器连接关闭</p>`
+              }
+          }
+        //   发送消息 接收消息
+          var sendMessage = function () {
+            if(inputDom.value && isOpen)   {
+             // 发消息 要等到 连接成功才能发 而且内容不为空
+
+             // 发消息就是send
+             ws.send(inputDom.value) // 发送消息
+            //   发完之后 添加到 当前视图上
+             dom.innerHTML = dom.innerHTML + `<p style='color: red'>我说:${inputDom.value}</p>`
+             inputDom.value = ''
+            }
+
+          }
+          // 关闭连接
+          var  closeWS = function () {
+              ws.close() // 关闭连接
+          }
+    </script>
+</body>
+</html>

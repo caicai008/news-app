@@ -136,12 +136,11 @@ export const articleDisLikeAPI = ({ artId }) => {
 }
 
 // 评论 - 获取评论
-export const getCommentAPI = ({ art_id, offset }) => request({
+export const getCommentAPI = ({ art_id }) => request({
   url: '/v1_0/comments',
   params: {
     type: 'a',
-    source: art_id,
-    offset
+    source: art_id
   }
 })
 

@@ -7,7 +7,7 @@
         <!-- 使用 title 插槽来自定义标题 -->
         <!-- 使用 title 插槽来自定义标题 -->
         <template #icon>
-          <img :src="user.photo" alt="" class="avatar">
+          <van-image round class="avatar" :src="userPhoto"/>
         </template>
         <template #title>
           <span class="username">{{user.name}}</span>
@@ -34,27 +34,54 @@
     </div>
     <!-- 操作面板 -->
      <van-cell-group class="action-card">
-      <van-cell icon="edit" title="编辑资料" is-link />
-      <van-cell icon="chat-o" title="小思同学" is-link />
-      <van-cell icon="warning-o" title="退出登录" is-link />
+      <van-cell icon="edit" title="编辑资料" is-link to="/user_editor" />
+      <van-cell icon="chat-o" title="小思同学" is-link to="/chat" />
+      <van-cell icon="warning-o" title="退出登录" is-link @click="quit" />
     </van-cell-group>
   </div>
 </template>
 
 <script>
 import { getUserInfoAPI } from '@/api/user'
+import { Dialog } from 'vant'
+import { removeToken } from '@/utils/token'
+import { mapGetters, mapMutations, mapState } from 'vuex'
 export default {
   name: 'MyUser',
   data () {
     return {
       // 请求数据, 保存到data变量上, 才能在vue模板标签上直接用
-      user: {}
+      // user: {}
     }
   },
   async created () {
     const res = await getUserInfoAPI()
     // console.log(res)
-    this.userInfo = res.data.data
+    // this.user = res.data.data
+    this.setUser(res.data.data)
+  },
+  methods: {
+    quit () {
+      Dialog.confirm({
+        title: '提示',
+        message: '您确定退出当前账号吗？'
+      })
+        .then(() => {
+          // on confirm
+          // 清空vuex和本地
+          removeToken()
+          // 跳转到登录页
+          this.$router.push('/login')
+        })
+        .catch(() => {
+          // on cancel
+        })
+    },
+    ...mapMutations(['setUser'])
+  },
+  computed: {
+    ...mapState(['user']),
+    ...mapGetters(['userPhoto'])
   }
 }
 </script>

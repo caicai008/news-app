@@ -1,12 +1,4 @@
 <template>
-  <van-list
-        v-model="loading"
-        :finished="finished"
-        finished-text="没有更多了"
-        @load="onLoad"
-        offset="50"
-        :immediate-check="false"
-    >
     <div class="com-list" :class="{'art-cmt-container-1' : showCom, 'art-cmt-container-2' : !showCom}">
       <div class="com-item" v-for="obj in commentList" :key="obj.com_id">
           <!-- 评论头部 -->
@@ -56,7 +48,6 @@
           </div>
       </div>
     </div>
-  </van-list>
 </template>
 
 <script>
@@ -68,10 +59,7 @@ export default {
       commentList: [],
       showCom: false, //
       totalCount: 0, // 总评论数
-      comValue: '', // 评论内容
-      loading: false, // 底部加载状态
-      finished: false, // 底部是否加载完成
-      offset: null // 下一页(偏移id), 一定初始值null(第一页不需要传, axios遇到null忽略此参数)
+      comValue: '' // 评论内容
     }
   },
   async created () {
@@ -82,20 +70,14 @@ export default {
     // 评论 - 获取评论
     async getCommentListFn () {
       const res = await getCommentAPI({
-        art_id: this.$route.query.art_id,
-        offset: this.offset // 把offset偏移量带给后台
+        art_id: this.$route.query.art_id
       })
-      console.log(res)
+
       this.commentList = res.data.data.results // 保存到变量中
       this.totalCount = res.data.data.total_count || ''
       this.offset = res.data.data.last_id // 保存起来为了做分页
-      // 关闭加载状态
-      this.loading = false
     },
-    // 评论 - 加载更多
-    onLoad () {
-      this.getCommentListFn()
-    },
+
     async loveFn (bool, obj) {
       if (bool === true) {
         // 业务 => 取消红心

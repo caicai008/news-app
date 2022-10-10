@@ -10,9 +10,12 @@ import {
   Icon, Tab, Tabs, cell, List,
   PullRefresh, ActionSheet, Popup,
   Col, Row, Badge, Search, Divider,
-  Tag, CellGroup
+  Tag, CellGroup, Image, Dialog, DatetimePicker
 } from 'vant'
 
+Vue.use(DatetimePicker)
+Vue.use(Dialog)
+Vue.use(Image)
 Vue.use(CellGroup)
 Vue.use(Tag)
 Vue.use(Divider)
